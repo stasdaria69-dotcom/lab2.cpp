@@ -1,0 +1,66 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+	setlocale(LC_ALL, "Rus");
+
+	char type;
+	double v;
+	double basePrice = 0;
+	string typeName = "";
+
+	cout << "Введите код потребителя (H - квартира, P - частный дом, C - коммерческий объект):\n";
+	cin >> type;
+	cout << "Введите объем потребления:\n";
+	cin >> v;
+
+	if (v >= 0) {
+		switch (type) {
+		case 'H':
+		case 'h':
+			basePrice = 0.25;
+			typeName = "Квартира";
+			break;
+		case 'P':
+		case 'p':
+			basePrice = 0.20;
+			typeName = "Частный дом";
+			break;
+		case 'C':
+		case 'c':
+			basePrice = 0.40;
+			typeName = "Коммерческий объект";
+			break;
+		default:
+			cout << "Ошибка: Неверный код потребителя!\n";
+			return 1;
+		}
+			if (v <= 300) {
+				cout << "\nТип потребителя: " << typeName << "\n";
+				cout << "Стоимость основной части (по тарифу " << basePrice << "):\n";
+				cout << v * basePrice;
+				cout << "\n";
+				cout << "Цена за весь объем:\n";
+				cout << v * basePrice;
+				cout << "\n";
+			}
+			else {
+				cout << "\nТип потребителя: " << typeName << "\n";
+				cout << "Стоимость основной части (за первые 300 по " << basePrice << "):\n";
+				cout << 300 * basePrice;
+				cout << "\n";
+				cout << "Цена за объем больше 300 (тариф увеличен на 50% = " << basePrice * 1.5 << "):\n";
+				cout << (v - 300) * (basePrice * 1.5);
+				cout << "\n";
+				cout << "Цена за весь объем:\n";
+				cout << (300 * basePrice) + ((v - 300) * (basePrice * 1.5));
+				cout << "\n";
+			}
+		}
+	else {
+		cout << "Введено отрицательное число. Попробуйте еще раз\n";
+	}
+
+	return 0;
+}
