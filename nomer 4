@@ -1,0 +1,78 @@
+#include <iostream>
+#include <string>
+using namespace std;
+int main() {
+	setlocale(LC_ALL, "Rus");
+	char type;
+	double totalV;
+	double nightPercent;
+	bool hasDebt;
+	double dayPrice = 0;
+	string typeName = "";
+	cout << "Введите код потребителя (H - квартира, P - частный дом, C - коммерческий объект):\n";
+	cin >> type;
+	cout << "Введите общий объем потребления:\n";
+	cin >> totalV;
+	cout << "Введите долю ночного потребления в процентах (0..100):\n";
+	cin >> nightPercent;
+	cout << "Есть ли задолженность (0 - нет, 1 - да):\n";
+	cin >> hasDebt;
+	if (totalV >= 0 && nightPercent >= 0 && nightPercent <= 100) {
+		switch (type) {
+		case 'H':
+		case 'h':
+			dayPrice = 0.25;
+			typeName = "Квартира";
+			break;
+		case 'P':
+		case 'p':
+			dayPrice = 0.20;
+			typeName = "Частный дом";
+			break;
+		case 'C':
+		case 'c':
+			dayPrice = 0.40;
+			typeName = "Коммерческий объект";
+			break;
+		default:
+			cout << "Ошибка: Неверный код потребителя!\n";
+			return 1;
+		}
+        double nightPrice = dayPrice * 0.70;  
+
+		double nightV = totalV * (nightPercent / 100.0);  
+		double dayV = totalV - nightV;                   
+        double dayCost = dayV * dayPrice;
+		double nightCost = nightV * nightPrice;
+		double subTotal = dayCost + nightCost;  
+		double finalCost = subTotal;            
+		double fee = 0;
+		if (hasDebt == 1 && subTotal > 50) {
+			if (type != 'P' && type != 'p') {
+				fee = 3.0;
+				finalCost = subTotal + fee;
+			}
+		}
+
+		 
+		cout << "\n--- РЕЗУЛЬТАТЫ РАСЧЕТА ---\n";
+		cout << "Тип потребителя: " << typeName << "\n";
+		cout << "Дневное потребление: " << dayV << " ед. (Тариф: " << dayPrice << ")\n";
+		cout << "Стоимость дневной части: " << dayCost << "\n\n";
+
+		cout << "Ночное потребление: " << nightV << " ед. (Тариф: " << nightPrice << ")\n";
+		cout << "Стоимость ночной части: " << nightCost << "\n\n";
+
+		if (fee > 0) {
+			cout << "Рассчитанная сумма превысила 50 при наличии долга.\n";
+			cout << "Добавлен фиксированный сбор: " << fee << "\n\n";
+		}
+
+		cout << "Итоговая стоимость к оплате: " << finalCost << "\n";
+	}
+	else {
+		cout << "Ошибка: Введены некорректные данные (объем < 0 или проценты вышли за рамки 0..100)!\n";
+	}
+
+	return 0;
+}
